@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form'
-import { Button, Input } from '@mui/material';
+import { useForm, Controller, FormProvider, useFormContext } from 'react-hook-form'
+
+function NestedInput() {
+  const { register } = useFormContext();
+  return (
+    <input placeholder='User Name' {...register('name')} />
+  )
+}
 
 interface Form {
-  age: number
+  name: string;
 }
 
 function App() {
-  const { handleSubmit, control, formState: { errors } } = useForm();
+  const methods = useForm();
   const [result, setResult] = useState('');
 
   const onSubmit = (data: Form) => {
@@ -15,29 +21,13 @@ function App() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit as any)}>
-      <div className='container'>
-        <Controller
-          name="age"
-          control={control}
-          defaultValue={33}
-          rules={{ required: true, min: 17, max: 40 }}
-          render={({ field }) => <Input {...field} />}
-        />
-        {
-          errors.age?.type === 'required' && <span>Age is required</span>
-        }
-        {
-          errors.age?.type === 'min' && <span>Mininum Age is 17</span>
-        }
-        {
-          errors.age?.type === 'max' && <span>Maximum Age is 40</span>
-        }
-      </div>
-      <br />
-      <Button type="submit" variant="outlined">Submit</Button>
-      <p>{result}</p>
-    </form>
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit as any)}>
+        <NestedInput />
+        <input type="submit" />
+        <p>{result}</p>
+      </form>
+    </FormProvider>
   );
 }
 
