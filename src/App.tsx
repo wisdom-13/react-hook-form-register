@@ -1,17 +1,13 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form'
+import React from 'react';
+import Register from './component/Register';
+import Vaildation from './component/Validation';
 
 
 function App() {
-  const { register, watch } = useForm();
-
-  const watchNickname = watch('nickname', 'Easton');
 
   return (
-    <form>
-      <input type="text" placeholder='Nick Name' {...register('nickname')} />
-      <p>{watchNickname}</p>
-    </form>
+    // <Register />
+    <Vaildation />
   );
 }
 
