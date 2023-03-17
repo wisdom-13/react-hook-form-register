@@ -1,33 +1,24 @@
 import React, { useState } from 'react';
-import { useForm, Controller, FormProvider, useFormContext } from 'react-hook-form'
-
-function NestedInput() {
-  const { register } = useFormContext();
-  return (
-    <input placeholder='User Name' {...register('name')} />
-  )
-}
+import { useForm } from 'react-hook-form'
 
 interface Form {
   name: string;
+  password: string;
 }
 
 function App() {
-  const methods = useForm();
+  const { register, handleSubmit } = useForm();
   const [result, setResult] = useState('');
 
-  const onSubmit = (data: Form) => {
-    setResult(JSON.stringify(data));
-  }
+  const onSubmit = (data: Form) => setResult(JSON.stringify(data));
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit as any)}>
-        <NestedInput />
-        <input type="submit" />
-        <p>{result}</p>
-      </form>
-    </FormProvider>
+    <form onSubmit={handleSubmit(onSubmit as any)}>
+      <input type="text" {...register('name')} placeholder="User Name" />
+      <input type="password" {...register('password')} placeholder="Password" />
+      <input type="submit" />
+      <p>{result}</p>
+    </form>
   );
 }
 
